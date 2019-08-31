@@ -178,6 +178,7 @@ function brushIt(_x, _y, pX, pY) {
 
 
     drawLayer.tint(0, 0, 0, 100)
+    drawLayer.imageMode(CENTER);
     drawLayer.image(brush[2], _x, _y, 30, 30);
 
   //   drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 6, 7)); // for line work
