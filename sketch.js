@@ -143,7 +143,6 @@ function makeDrawing(_x, _y, pX, pY) {
 
 
   if (counter === 0) {
-
     brushIt(_x, _y, pX, pY);
     brushIt(width - _x, _y, width - pX, pY);
   } else if (counter === 1) {
@@ -176,6 +175,7 @@ function makeDrawing(_x, _y, pX, pY) {
 function brushIt(_x, _y, pX, pY) {
 
   if (brushSelected === 1) {
+
 
     drawLayer.tint(0, 0, 0, 100)
     drawLayer.image(brush[2], _x, _y, 30, 30);
@@ -226,6 +226,16 @@ function brushIt(_x, _y, pX, pY) {
 }
 
 function draw() {
+
+  if (introState != 3){
+    fill(0);
+    noStroke();
+    image(bg, 0, 0, width, height);
+    image(textLayer, 0, 0, width, height);
+
+
+
+  }
 
   if (introState === 3) {
     if (uiInterrupt) {
