@@ -1,7 +1,7 @@
 let brush = [];
 let longEdge, shortEdge, circleRad, lmax, wmax, hmax;
 let drawLayer, textLayer, uiLayer;
-let brushSelected = 0;
+let brushSelected = 1;
 let faderStart;
 
 function preload() {
@@ -27,6 +27,7 @@ function setup() {
 
   dimensionCalc();
   slideShow();
+
 
 }
 
@@ -174,14 +175,22 @@ function makeDrawing(_x, _y, pX, pY) {
 
 function brushIt(_x, _y, pX, pY) {
 
+  if (brushSelected === 1) {
+
+    drawLayer.tint(0, 0, 0, 100)
+    drawLayer.image(brush[2], _x, _y, 30, 30);
+
+  //   drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 6, 7)); // for line work
+  //   let temp = abs(random(400,800));
+  //   drawLayer.stroke(50, 50, 50, temp);
+  //   drawLayer.line(_x, _y, pX, pY);
+  //   drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 3, 5)); // for line work
+  //   drawLayer.stroke(10, 10, 10, temp);
+  //   drawLayer.line(_x, _y, pX, pY);
+   }
+
   if (brushSelected === 0) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 4, 5)); // for line work
-    drawLayer.stroke(20, 20, 20, 300);
-    drawLayer.line(_x, _y, pX, pY);
-  }
-
-  if (brushSelected === 1) {
-    drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 9, 10)); // for line work
     drawLayer.stroke(20, 20, 20, 300);
     drawLayer.line(_x, _y, pX, pY);
   }
@@ -192,22 +201,20 @@ function brushIt(_x, _y, pX, pY) {
     drawLayer.stroke(20, 20, 20, 300);
     drawLayer.line(_x, _y, pX, pY);
   } else if (brushSelected === 3) {
-    // drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 30, 40)); // for line work
-    // drawLayer.stroke(hexColours[5]);
-    // drawLayer.line(_x, _y, pX, pY);
-    drawLayer.stroke(hexColours[0]);
+
+
+    drawLayer.stroke(abs(random(0,255), 500));
     drawLayer.strokeWeight(abs(random(0, 4)));
     for (i = 0; i < 5; i++) {
       drawLayer.point(_x + randomGaussian(-6, 6), _y + randomGaussian(-6, 6));
     }
   } else if (brushSelected === 4) {
-    drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 25, 30)); // for line work
-    drawLayer.stroke(hexColours[5]);
+    drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 30, 40)); // for line work
+    drawLayer.stroke(255, 255, 255, (faderStart--) / 5) + 1000;
     drawLayer.line(_x, _y, pX, pY);
-    drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 15, 25)); // for line work
-    drawLayer.stroke(hexColours[4]);
-    drawLayer.line(_x, _y, pX, pY);
-  } else if (brushSelected === 5) {
+    console.log(faderStart);
+  }
+  else if (brushSelected === 5) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 30, 40)); // for line work
     drawLayer.stroke(0, 0, 0, (faderStart--) / 10) + 1000;
     drawLayer.line(_x, _y, pX, pY);

@@ -1,7 +1,7 @@
 let button1, button2, button3;
 let rectWidth;
 
-let counter = 0;
+let counter = 4; // so that when the restart happens, resets to 0 via the restart function.
 let uiInterrupt = 0;
 
 let hexColours = ["#000000", "#444444", "#888888", "#a1a1a1", "#c2c2c2", "#ffffff"]
@@ -109,7 +109,7 @@ function restart() {
   drawState = 1;
   drawLayer.clear();
 
-  if (counter === 4){
+  if (counter >= 4){
     counter = 0;
   }
 
