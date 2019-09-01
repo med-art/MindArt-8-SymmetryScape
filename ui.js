@@ -22,74 +22,29 @@ function writeTextUI() {
   button2.class('restart');
   button2.mousePressed(restartTimeout);
 
+  button3 = createButton('Erase');
+  button3.class('deselect');
+  button3.mousePressed(erase);
+
   if (width > height) {
     rectWidth = height / 6;
-    button1.position(rectWidth / 2, windowHeight - lmax * 12);
-    button2.position(rectWidth / 2, windowHeight - lmax * 4);
+    button1.position((rectWidth / 2) + (lmax*0.5), windowHeight - lmax * 12.5);
+    button2.position((rectWidth / 2) + (lmax*0.5), windowHeight - lmax * 4.5);
+    button3.position((rectWidth / 2) + (lmax*0.5), lmax * 0.5);
   } else if (width <= height) {
     rectWidth = width / 6;
-    button1.position(windowWidth - (28 * lmax) - (lmax * 1.5), windowHeight - rectWidth / 2 - (4 * lmax));
-    button2.position(windowWidth - (18 * lmax) - (lmax * 1.5), windowHeight - rectWidth / 2 - (4 * lmax));
+    button1.position(windowWidth - (28 * lmax) - (lmax * 1.5), windowHeight - rectWidth / 2 - (4.5 * lmax));
+    button2.position(windowWidth - (18 * lmax) - (lmax * 1.5), windowHeight - rectWidth / 2 - (4.5 * lmax));
+    button3.position(lmax * 0.5, windowHeight - rectWidth / 2 - (4.5 * lmax));
   }
 }
 
-function writeStageUI() {
-
-  textSize(longEdge / 50);
-  fill(0);
-  noStroke();
-
-  button3 = createButton('New leaf');
-  button3.class('restart');
-  button3.mousePressed(leafChooser);
-
-  if (width > height) {
-    rectWidth = height / 6;
-    button3.position(rectWidth / 2, windowHeight - lmax * 8);
-
-  } else if (width <= height) {
-    button3.position(windowWidth - (18 * lmax) - (lmax * 1.5), windowHeight - rectWidth / 2 - (8 * lmax));
-  }
-}
-
-function leafChooser() {
-
-  leafCounter = 0;
-  leafChoice.noTint();
-
-  c2 = color("#FA6122");
-  c1 = color("#faa27d");
-
-  leafChoice.rectMode(CORNER);
-  leafChoice.fill("#FA6122");
-  leafChoice.rect(0, 0, width, height);
-
-
-  if (width < height) {
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 4; j++) {
-
-        leafChoice.image(leaf[leafCounter], i * (width / 3), j * (height / 4), shortEdge / 4, shortEdge / 4);
-        leafCounter++;
-      }
-    }
+function erase(){
+makeSwatch();
+brushSelected = 6;
+button3.class("select");
   }
 
-  if (width >= height) {
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 3; j++) {
-
-        leafChoice.image(leaf[leafCounter], i * (width / 4), j * (height / 3), shortEdge / 4, shortEdge / 4);
-        leafCounter++;
-      }
-    }
-  }
-
-
-
-  image(leafChoice, 0, 0, width, height);
-  setTimeout(interruptor, 100);
-}
 
 
 function interruptor() {
@@ -108,22 +63,30 @@ function restart() {
   // }
   drawState = 1;
   drawLayer.clear();
+  lineLayer.clear();
 
   if (counter >= 4){
     counter = 0;
   }
 
-  if (counter === 1 || counter === 2 || counter === 3){
-  drawLayer.strokeWeight(1);
-  drawLayer.stroke(180);
-  drawLayer.line(0, height/2, width, height/2);
+  if (counter === 1 || counter === 2){
+  lineLayer.strokeWeight(1);
+  lineLayer.stroke(180);
+  lineLayer.line(0, height/2, width, height/2);
 }
 
 
-  if (counter === 0 || counter === 2 || counter === 3){
-  drawLayer.strokeWeight(1);
-  drawLayer.stroke(180);
-  drawLayer.line(width/2, 0, width/2, height);
+  if (counter === 0 || counter === 2){
+  lineLayer.strokeWeight(1);
+  lineLayer.stroke(180);
+  lineLayer.line(width/2, 0, width/2, height);
+}
+
+if (counter === 3){
+lineLayer.strokeWeight(1);
+lineLayer.stroke(180);
+lineLayer.line(0, 0, width, height);
+lineLayer.line(width, 0, 0, height);
 }
 
 

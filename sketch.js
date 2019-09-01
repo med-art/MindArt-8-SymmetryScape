@@ -1,6 +1,6 @@
 let brush = [];
 let longEdge, shortEdge, circleRad, lmax, wmax, hmax;
-let drawLayer, textLayer, uiLayer;
+let drawLayer, textLayer, uiLayer, lineLayer;
 let brushSelected = 1;
 let faderStart;
 
@@ -24,6 +24,7 @@ function setup() {
 
   uiLayer = createGraphics(width, height);
   textLayer = createGraphics(width, height);
+    lineLayer = createGraphics(width, height);
 
   dimensionCalc();
   slideShow();
@@ -99,8 +100,9 @@ function mousePressed() {
             uiLayer.stroke(250);
             uiLayer.noFill();
             uiLayer.blendMode(DIFFERENCE);
-            uiLayer.rect(rectWidth*i, height-(rectWidth/2), rectWidth, height);
+            uiLayer.rect((rectWidth * i) + 5, (height - (rectWidth / 2)) + 5, rectWidth - 10, height - 10);
             uiLayer.blendMode(BLEND);
+            button3.class("deselect");
           }
         }
       }
@@ -115,6 +117,13 @@ function mousePressed() {
             console.log(i)
             brushSelected = i;
             makeSwatch();
+            uiLayer.strokeWeight(10);
+            uiLayer.stroke(250);
+            uiLayer.noFill();
+            uiLayer.blendMode(DIFFERENCE);
+            uiLayer.rect(5, (rectWidth * i) + 5, (rectWidth / 2) - 10, rectWidth - 10);
+            uiLayer.blendMode(BLEND);
+            button3.class("deselect");
           }
         }
       }
@@ -174,61 +183,80 @@ function makeDrawing(_x, _y, pX, pY) {
 
 function brushIt(_x, _y, pX, pY) {
 
-  if (brushSelected === 1) {
+  if (brushSelected === 2) {
 
 
     drawLayer.tint(0, 0, 0, 100)
     drawLayer.imageMode(CENTER);
-    drawLayer.image(brush[2], _x, _y, 30, 30);
+    drawLayer.push();
+    drawLayer.translate(_x, _y);
+    drawLayer.rotate(random(0, PI / 10));
+    drawLayer.image(brush[2], 0, 0, 35, 35);
+    drawLayer.pop();
 
-  //   drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 6, 7)); // for line work
-  //   let temp = abs(random(400,800));
-  //   drawLayer.stroke(50, 50, 50, temp);
-  //   drawLayer.line(_x, _y, pX, pY);
-  //   drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 3, 5)); // for line work
-  //   drawLayer.stroke(10, 10, 10, temp);
-  //   drawLayer.line(_x, _y, pX, pY);
-   }
+    //   drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 6, 7)); // for line work
+    //   let temp = abs(random(400,800));
+    //   drawLayer.stroke(50, 50, 50, temp);
+    //   drawLayer.line(_x, _y, pX, pY);
+    //   drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 3, 5)); // for line work
+    //   drawLayer.stroke(10, 10, 10, temp);
+    //   drawLayer.line(_x, _y, pX, pY);
+  }
 
   if (brushSelected === 0) {
-    drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 4, 5)); // for line work
-    drawLayer.stroke(20, 20, 20, 300);
+    drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 3, 5)); // for line work
+    drawLayer.stroke(10, 10, 10, 600);
     drawLayer.line(_x, _y, pX, pY);
   }
 
 
-  if (brushSelected === 2) {
+  if (brushSelected === 1) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 14, 15)); // for line work
     drawLayer.stroke(20, 20, 20, 300);
     drawLayer.line(_x, _y, pX, pY);
-  } else if (brushSelected === 3) {
-
-
-    drawLayer.stroke(abs(random(0,255), 500));
-    drawLayer.strokeWeight(abs(random(0, 4)));
-    for (i = 0; i < 5; i++) {
-      drawLayer.point(_x + randomGaussian(-6, 6), _y + randomGaussian(-6, 6));
-    }
   } else if (brushSelected === 4) {
+
+
+
+    drawLayer.strokeWeight(abs(random(0, 4)));
+    for (i = 0; i < 50; i++) {
+      drawLayer.stroke(abs(random(150, 255), 1000));
+      drawLayer.point(_x + randomGaussian(-10, 10), _y + randomGaussian(-10, 10));
+    }
+  } else if (brushSelected === 5) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 30, 40)); // for line work
     drawLayer.stroke(255, 255, 255, (faderStart--) / 5) + 1000;
     drawLayer.line(_x, _y, pX, pY);
     console.log(faderStart);
-  }
-  else if (brushSelected === 5) {
+  } else if (brushSelected === 3) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 30, 40)); // for line work
     drawLayer.stroke(0, 0, 0, (faderStart--) / 10) + 1000;
     drawLayer.line(_x, _y, pX, pY);
     console.log(faderStart);
-  }
+  } else if (brushSelected === 6) {
 
+
+    drawLayer.loadPixels();
+    for (let y = (_y - 60); y < (_y + 60); y += 2) {
+      for (let x = (_x - 60); x < (_x + 60); x += 2) {
+        if (dist(x, y, _x, _y) < 30) {
+          drawLayer.set(x, y, color(0, 0));
+        }
+      }
+    }
+    drawLayer.updatePixels();
+
+
+
+  }
 
 
 }
 
+
 function draw() {
 
-  if (introState != 3){
+  if (introState != 3) {
     fill(0);
     noStroke();
     image(bg, 0, 0, width, height);
@@ -245,6 +273,7 @@ function draw() {
       image(bg, 0, 0, width, height);
       image(drawLayer, 0, 0, width, height);
       blendMode(BLEND);
+      image(lineLayer, 0, 0, width, height);
       image(uiLayer, 0, 0, width, height);
     }
 
