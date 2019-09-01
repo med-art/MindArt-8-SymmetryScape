@@ -97,7 +97,7 @@ function mousePressed() {
 
   } else if (introState === 3) {
 
-    faderStart = 1000;
+    faderStart = 300;
 
 
 
@@ -150,7 +150,7 @@ function mousePressed() {
 
 
 function touchEnded(){
-  faderStart = 1000;
+  faderStart = 300;
 
 }
 
@@ -249,14 +249,14 @@ function brushIt(_x, _y, pX, pY) {
     }
   } else if (brushSelected === 5) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 30, 40)); // for line work
-    drawLayer.stroke(255, 255, 255, (faderStart--) / 5) + 100;
+    drawLayer.stroke(255, 255, 255, (faderStart--) / 5);
     drawLayer.line(_x, _y, pX, pY);
 
 
 
   } else if (brushSelected === 3) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 30, 40)); // for line work
-    drawLayer.stroke(0, 0, 0, (faderStart--) / 10) + 100;
+    drawLayer.stroke(0, 0, 0, (faderStart--) / 10);
 
     drawLayer.line(_x, _y, pX, pY);
 
