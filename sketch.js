@@ -1,8 +1,11 @@
 let brush = [];
 let longEdge, shortEdge, circleRad, lmax, wmax, hmax;
-let drawLayer, textLayer, uiLayer, lineLayer;
+let drawLayer, textLayer, uiLayer, lineLayer, introLayer;
 let brushSelected = 1;
 let faderStart;
+let qtyIntroDots = 100;
+let xCo = [];
+let yCo = [];
 
 function preload() {
   bg = loadImage('assets/paper.jpg');
@@ -25,9 +28,16 @@ function setup() {
   uiLayer = createGraphics(width, height);
   textLayer = createGraphics(width, height);
     lineLayer = createGraphics(width, height);
+        introLayer = createGraphics(width, height);
+        introLayer.fill(100);
 
   dimensionCalc();
   slideShow();
+
+  for (i = 0; i < qtyIntroDots; i++){
+    xCo[i] = int(random(0,width));
+    yCo[i] = int(random(0,height));
+  }
 
 
 }
@@ -237,8 +247,8 @@ function brushIt(_x, _y, pX, pY) {
 
 
     drawLayer.loadPixels();
-    for (let y = (_y - 60); y < (_y + 60); y += 2) {
-      for (let x = (_x - 60); x < (_x + 60); x += 2) {
+    for (let y = (_y - 60); y < (_y + 60); y ++ ) {
+      for (let x = (_x - 60); x < (_x + 60); x ++ ) {
         if (dist(x, y, _x, _y) < 30) {
           drawLayer.set(x, y, color(0, 0));
         }
@@ -257,10 +267,23 @@ function brushIt(_x, _y, pX, pY) {
 function draw() {
 
   if (introState != 3) {
-    fill(0);
-    noStroke();
+
+
     image(bg, 0, 0, width, height);
-    image(textLayer, 0, 0, width, height);
+
+    image(introLayer, 0, 0, width, height);
+        image(textLayer, 0, 0, width, height);
+
+    for (i = 0; i < qtyIntroDots; i++){
+       xCo[i] += int(random(-2,2));
+          yCo[i] += int(random(0,2));
+          yCo[i] = yCo[i]%(height/2);
+
+              introLayer.ellipse(xCo[i], yCo[i], 2, 2);
+                    introLayer.ellipse(xCo[i], height-yCo[i], 2, 2);
+    }
+
+
 
 
 

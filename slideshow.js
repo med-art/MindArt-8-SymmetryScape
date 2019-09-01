@@ -22,14 +22,16 @@ function slideShow() {
     textLayer.noFill();
     textLayer.noTint();
 
-     for (let y = 0; y < height/2; y++) {
-       let inter = map(y, 0, height/2, 0, 1);
-       let c = lerpColor(color(0), color(90), inter);
-       textLayer.stroke(c);
-            textLayer.strokeWeight(10);
-       textLayer.line(0, y, width, y);
-      textLayer.line(0, height-y, width , height-y);
-     }
+     introLayer.strokeWeight(10);
+    for (let y = 0; y < height/2; y++) {
+      let inter = map(y, 0, height/2, 0, 1);
+      let c = lerpColor(color(0), color(60), inter);
+      introLayer.stroke(c);
+
+      introLayer.line(0, y, width, y);
+     introLayer.line(0, height-y, width , height-y);
+    }
+    introLayer.noStroke();
 
 
 
