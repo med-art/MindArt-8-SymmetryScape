@@ -249,14 +249,14 @@ function brushIt(_x, _y, pX, pY) {
     }
   } else if (brushSelected === 5) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 30, 40)); // for line work
-    drawLayer.stroke(255, 255, 255, (faderStart--) / 5) + 1000;
+    drawLayer.stroke(255, 255, 255, (faderStart--) / 5) + 100;
     drawLayer.line(_x, _y, pX, pY);
 
 
 
   } else if (brushSelected === 3) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 30, 40)); // for line work
-    drawLayer.stroke(0, 0, 0, (faderStart--) / 10) + 1000;
+    drawLayer.stroke(0, 0, 0, (faderStart--) / 10) + 100;
 
     drawLayer.line(_x, _y, pX, pY);
 
