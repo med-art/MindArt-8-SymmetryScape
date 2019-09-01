@@ -149,6 +149,11 @@ function mousePressed() {
 }
 
 
+function touchEnded(){
+  faderStart = 1000;
+
+}
+
 function touchMoved() {
 
 
