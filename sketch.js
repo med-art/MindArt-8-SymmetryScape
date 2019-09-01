@@ -3,9 +3,10 @@ let longEdge, shortEdge, circleRad, lmax, wmax, hmax;
 let drawLayer, textLayer, uiLayer, lineLayer, introLayer;
 let brushSelected = 1;
 let faderStart;
-let qtyIntroDots = 100;
+let qtyIntroDots = 5;
 let xCo = [];
 let yCo = [];
+let velo = [];
 
 function preload() {
   bg = loadImage('assets/paper.jpg');
@@ -29,14 +30,17 @@ function setup() {
   textLayer = createGraphics(width, height);
     lineLayer = createGraphics(width, height);
         introLayer = createGraphics(width, height);
-        introLayer.fill(100);
+            drawLayer.colorMode(RGB, 255, 255, 255, 1000);
+        introLayer.fill(100, 100, 100, 5);
+          introLayer.strokeCap(SQUARE);
 
   dimensionCalc();
   slideShow();
 
   for (i = 0; i < qtyIntroDots; i++){
     xCo[i] = int(random(0,width));
-    yCo[i] = int(random(0,height));
+    yCo[i] = 0;
+    velo[i] = (random(1,5));
   }
 
 
@@ -86,7 +90,7 @@ function mousePressed() {
 
     // Start of Slideshow
   } else if (introState === 0) {
-    //  audio.loop();
+      audio.loop();
     slide = 1;
     slideShow();
     introState = 1;
@@ -196,21 +200,25 @@ function brushIt(_x, _y, pX, pY) {
   if (brushSelected === 2) {
 
 
-    drawLayer.tint(0, 0, 0, 100)
-    drawLayer.imageMode(CENTER);
-    drawLayer.push();
-    drawLayer.translate(_x, _y);
-    drawLayer.rotate(random(0, PI / 10));
-    drawLayer.image(brush[2], 0, 0, 35, 35);
-    drawLayer.pop();
+    // drawLayer.tint(0, 0, 0, 100)
+    // drawLayer.imageMode(CENTER);
+    // drawLayer.push();
+    // drawLayer.translate(_x, _y);
+    // drawLayer.rotate(random(0, PI / 10));
+    // drawLayer.image(brush[2], 0, 0, 35, 35);
+    // drawLayer.pop();
 
-    //   drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 6, 7)); // for line work
-    //   let temp = abs(random(400,800));
-    //   drawLayer.stroke(50, 50, 50, temp);
-    //   drawLayer.line(_x, _y, pX, pY);
-    //   drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 3, 5)); // for line work
-    //   drawLayer.stroke(10, 10, 10, temp);
-    //   drawLayer.line(_x, _y, pX, pY);
+    drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 3, 5)); // for line work
+    drawLayer.stroke(10, 10, 10, 200);
+
+    for (i = 0; i < 10; i++){
+      let randX = randomGaussian(-6,6);
+          let randY = randomGaussian(-6,6);
+        drawLayer.line(_x+randX, _y+randY, pX+randX, pY+randY);
+    }
+
+
+
   }
 
   if (brushSelected === 0) {
@@ -222,27 +230,34 @@ function brushIt(_x, _y, pX, pY) {
 
   if (brushSelected === 1) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 14, 15)); // for line work
-    drawLayer.stroke(20, 20, 20, 300);
+    drawLayer.stroke(20, 20, 20, 500);
     drawLayer.line(_x, _y, pX, pY);
   } else if (brushSelected === 4) {
 
 
 
     drawLayer.strokeWeight(abs(random(0, 4)));
-    for (i = 0; i < 50; i++) {
-      drawLayer.stroke(abs(random(150, 255), 1000));
+    for (i = 0; i < 60; i++) {
+      let tempCol = abs(random(200, 255));
+      drawLayer.stroke(tempCol, tempCol, tempCol, 500);
       drawLayer.point(_x + randomGaussian(-10, 10), _y + randomGaussian(-10, 10));
     }
   } else if (brushSelected === 5) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 30, 40)); // for line work
     drawLayer.stroke(255, 255, 255, (faderStart--) / 5) + 1000;
     drawLayer.line(_x, _y, pX, pY);
-    console.log(faderStart);
+
+
+
   } else if (brushSelected === 3) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 30, 40)); // for line work
     drawLayer.stroke(0, 0, 0, (faderStart--) / 10) + 1000;
+
     drawLayer.line(_x, _y, pX, pY);
-    console.log(faderStart);
+
+
+
+
   } else if (brushSelected === 6) {
 
 
@@ -269,18 +284,32 @@ function draw() {
   if (introState != 3) {
 
 
-    image(bg, 0, 0, width, height);
+
 
     image(introLayer, 0, 0, width, height);
         image(textLayer, 0, 0, width, height);
 
-    for (i = 0; i < qtyIntroDots; i++){
-       xCo[i] += int(random(-2,2));
-          yCo[i] += int(random(0,2));
-          yCo[i] = yCo[i]%(height/2);
 
-              introLayer.ellipse(xCo[i], yCo[i], 2, 2);
-                    introLayer.ellipse(xCo[i], height-yCo[i], 2, 2);
+    for (i = 0; i < qtyIntroDots; i++){
+       xCo[i] += int(random(-2,5));
+       xCo[i] = xCo[i]%(width);
+          yCo[i] += int(random(1,velo[i]));
+          yCo[i] = yCo[i]%((height/2)+2);
+
+
+          for (j = 0; j < 5; j++){
+            let randX = randomGaussian(-3,3);
+            let randY = randomGaussian(-3,3);
+            introLayer.fill(150, 150, 150, 150);
+            introLayer.ellipse(xCo[i]+randX, yCo[i]+randY, 10, 10);
+            introLayer.fill(130, 130, 130, 20);
+            introLayer.ellipse(xCo[i]+randX, (height-yCo[i])+randY, 10, 10);
+          }
+          introLayer.strokeWeight(1);
+          introLayer.stroke(120);
+          introLayer.line(0,height/2,width,height/2);
+
+
     }
 
 
