@@ -71,20 +71,20 @@ function restart() {
 
   if (counter === 1 || counter === 2){
   lineLayer.strokeWeight(1);
-  lineLayer.stroke(180);
+  lineLayer.stroke(210);
   lineLayer.line(0, height/2, width, height/2);
 }
 
 
   if (counter === 0 || counter === 2){
   lineLayer.strokeWeight(1);
-  lineLayer.stroke(180);
+  lineLayer.stroke(210);
   lineLayer.line(width/2, 0, width/2, height);
 }
 
 if (counter === 3){
 lineLayer.strokeWeight(1);
-lineLayer.stroke(180);
+lineLayer.stroke(210);
 lineLayer.line(0, 0, width, height);
 lineLayer.line(width, 0, 0, height);
 }

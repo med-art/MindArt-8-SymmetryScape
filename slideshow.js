@@ -1,6 +1,6 @@
 let introText = ["Touch", "Listen", "Look"];
 let slide = 0;
-let delayTime = 7000;
+let delayTime = 1000;
 let introState = 0;
 let noiseScale=2;
 
@@ -44,7 +44,7 @@ function slideShow() {
     textLayer.push();
     textLayer.translate(width/2, height/2);
     textLayer.scale(1,-1);
-    textLayer.fill(color(120,120,120,50));
+    textLayer.fill(color(120,120,120,200));
     textLayer.text(introText[slide], 0, 0-(lmax*2), width * 0.8, height);
     textLayer.pop();
 
