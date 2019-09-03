@@ -1,6 +1,6 @@
 let introText = ["Touch", "Listen", "Look"];
 let slide = 0;
-let delayTime = 1000;
+let delayTime = 10000;
 let introState = 0;
 let noiseScale=2;
 
