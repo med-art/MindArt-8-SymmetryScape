@@ -1,7 +1,7 @@
 let brush = [];
-let longEdge, shortEdge, circleRad, lmax, wmax, hmax;
+let longEdge, shortEdge, circleRad, vMax, wmax, hmax;
 let drawLayer, textLayer, uiLayer, lineLayer, introLayer;
-let brushSelected = 1;
+let brushSelected = 0;
 let faderStart;
 let qtyIntroDots = 50;
 let xCo = [];
@@ -21,7 +21,6 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   pixelDensity(1); // Ignores retina displays
 
-
   //Visible draw Layer
   drawLayer = createGraphics(width, height);
   drawLayer.colorMode(RGB, 255, 255, 255, 1000);
@@ -29,11 +28,11 @@ function setup() {
 
   uiLayer = createGraphics(width, height);
   textLayer = createGraphics(width, height);
-    lineLayer = createGraphics(width, height);
-        introLayer = createGraphics(width, height);
-            drawLayer.colorMode(RGB, 255, 255, 255, 1000);
-        introLayer.fill(100, 100, 100, 5);
-          introLayer.strokeCap(SQUARE);
+  lineLayer = createGraphics(width, height);
+  introLayer = createGraphics(width, height);
+  drawLayer.colorMode(RGB, 255, 255, 255, 1000);
+  introLayer.fill(100, 100, 100, 5);
+  introLayer.strokeCap(SQUARE);
 
   dimensionCalc();
   slideShow();
@@ -44,7 +43,6 @@ function setup() {
     velo[i] = (random(1,5));
   }
 
-
 }
 
 function dimensionCalc() {
@@ -54,11 +52,11 @@ function dimensionCalc() {
     longEdge = width;
     shortEdge = height;
     circleRad = shortEdge * 0.45;
-    lmax = width / 100;
+    vMax = width / 100;
   } else {
     longEdge = height;
     shortEdge = width;
-    lmax = height / 100;
+    vMax = height / 100;
     circleRad = shortEdge * 0.45;
   }
 }
@@ -69,16 +67,6 @@ function mousePressed() {
   if (uiInterrupt === 1) {
 
 
-
-    if (width < height) {
-      for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 4; j++) {
-          if (dist((i * (width / 3)) + shortEdge / 4, (j * (height / 4)) + shortEdge / 4, winMouseX, winMouseY) < shortEdge / 4) {}
-          //need to include a coutner here
-        }
-        brushCounter++;
-      }
-    } else if (width >= height) {
       for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 3; j++) {
           if (dist((i * (width / 4)) + shortEdge / 4, (j * (height / 3)) + shortEdge / 4, winMouseX, winMouseY) < shortEdge / 4) {
@@ -87,7 +75,6 @@ function mousePressed() {
           brushCounter++;
         }
       }
-    }
 
     // Start of Slideshow
   } else if (introState === 0) {
@@ -100,53 +87,7 @@ function mousePressed() {
 
     faderStart = 600;
 
-
-
-    if (height > width) {
-      if (mouseY > height - rectWidth / 2) {
-
-        for (i = 0; i < 6; i++) {
-          if (mouseX > rectWidth * i && mouseX < rectWidth * (i + 1)) {
-            console.log(i);
-            brushSelected = i;
-            uiLayer.clear();
-            makeSwatch();
-            uiLayer.strokeWeight(10);
-            uiLayer.stroke(250);
-            uiLayer.noFill();
-            uiLayer.blendMode(DIFFERENCE);
-            uiLayer.rect((rectWidth * i) + 5, (height - (rectWidth / 2)) + 5, rectWidth - 10, height - 10);
-            uiLayer.blendMode(BLEND);
-            button3.class("deselect");
-          }
-        }
-      }
-    }
-
-    if (height <= width) {
-
-      if (mouseX < rectWidth / 2) {
-
-        for (i = 0; i < 6; i++) {
-          if (mouseY > rectWidth * i && mouseY < rectWidth * (i + 1)) {
-            console.log(i)
-            brushSelected = i;
-            makeSwatch();
-            uiLayer.strokeWeight(10);
-            uiLayer.stroke(250);
-            uiLayer.noFill();
-            uiLayer.blendMode(DIFFERENCE);
-            uiLayer.rect(5, (rectWidth * i) + 5, (rectWidth / 2) - 10, rectWidth - 10);
-            uiLayer.blendMode(BLEND);
-            button3.class("deselect");
-          }
-        }
-      }
-    }
-
-
-
-  }
+}
 }
 
 
@@ -203,16 +144,9 @@ function makeDrawing(_x, _y, pX, pY) {
 
 function brushIt(_x, _y, pX, pY) {
 
-  if (brushSelected === 2) {
+  if (brushSelected === 3) {
 
 
-    // drawLayer.tint(0, 0, 0, 100)
-    // drawLayer.imageMode(CENTER);
-    // drawLayer.push();
-    // drawLayer.translate(_x, _y);
-    // drawLayer.rotate(random(0, PI / 10));
-    // drawLayer.image(brush[2], 0, 0, 35, 35);
-    // drawLayer.pop();
 
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 2, 3)); // for line work
     drawLayer.stroke(100, 100, 100, 500);
@@ -227,19 +161,19 @@ function brushIt(_x, _y, pX, pY) {
 
   }
 
-  if (brushSelected === 0) {
+  if (brushSelected === 1) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 3, 5)); // for line work
     drawLayer.stroke(10, 10, 10, 600);
     drawLayer.line(_x, _y, pX, pY);
   }
 
 
-  if (brushSelected === 1) {
+  if (brushSelected === 0) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 14, 15)); // for line work
     drawLayer.stroke(20, 20, 20, 500);
     drawLayer.line(_x, _y, pX, pY);
 
-    
+
   } else if (brushSelected === 4) {
 
 
@@ -257,7 +191,7 @@ function brushIt(_x, _y, pX, pY) {
 
 
 
-  } else if (brushSelected === 3) {
+  } else if (brushSelected === 2) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 50, 60)); // for line work
 
     if (faderStart <= 0){
@@ -307,8 +241,6 @@ function draw() {
   if (introState != 3) {
 
 
-
-
     image(introLayer, 0, 0, width, height);
         image(textLayer, 0, 0, width, height);
 
@@ -335,10 +267,6 @@ function draw() {
 
     }
 
-
-
-
-
   }
 
   if (introState === 3) {
@@ -351,8 +279,6 @@ function draw() {
       image(lineLayer, 0, 0, width, height);
       image(uiLayer, 0, 0, width, height);
     }
-
-
 
   }
 }

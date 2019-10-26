@@ -1,12 +1,13 @@
-let button1, button2, button3;
+let saveButton, newButton, button3;
 let rectWidth;
-
 let counter = 4; // so that when the restart happens, resets to 0 via the restart function.
 let uiInterrupt = 0;
 
 let hexColours = ["#000000", "#444444", "#888888", "#a1a1a1", "#c2c2c2", "#ffffff"]
+let colArray = ["#000000", "#444444", "#888888", "#a1a1a1", "#c2c2c2", "#ffffff"]
 
-let leafCount = 0;
+let fsBool = 0;
+let fsButton;
 
 function writeTextUI() {
 
@@ -14,35 +15,128 @@ function writeTextUI() {
   fill(0);
   noStroke();
 
-  button1 = createButton('Save');
-  button1.class('save');
-  button1.mousePressed(saveImg);
+  newButton = createButton("Next")
+  newButton.class("select");
+  newButton.position(width - (15 * vMax), height - (12.5 * vMax));
+  newButton.style('font-size', '2.6vmax');
+  newButton.style('height', '4.5vmax');
+  newButton.mousePressed(restart);
 
-  button2 = createButton('New Drawing');
-  button2.class('restart');
-  button2.mousePressed(restartTimeout);
+  saveButton = createButton("Save")
+  saveButton.class("select");
+  saveButton.style('font-size', '2.6vmax');
+  saveButton.style('height', '4.5vmax');
+  saveButton.position(width - (15 * vMax), height - (6.5 * vMax));
+  saveButton.mousePressed(saveImg);
 
-  button3 = createButton('Erase');
-  button3.class('deselect');
-  button3.mousePressed(erase);
 
-  if (width > height) {
-    rectWidth = height / 6;
-    button1.position((rectWidth / 2) + (lmax*0.5), windowHeight - lmax * 12.5);
-    button2.position((rectWidth / 2) + (lmax*0.5), windowHeight - lmax * 4.5);
-    button3.position((rectWidth / 2) + (lmax*0.5), lmax * 0.5);
-  } else if (width <= height) {
+
+
+  button = createImg('assets/eraseOn.png');
+  button.remove();
+  button = createImg('assets/eraseOff.png');
+  button.position(1.5 * vMax, height - (14 * vMax));
+  button.size(14 * vMax, 14 * vMax);
+  button.mousePressed(erase);
+
+
+
     rectWidth = width / 6;
-    button1.position(windowWidth - (28 * lmax) - (lmax * 1.5), windowHeight - rectWidth / 2 - (4.5 * lmax));
-    button2.position(windowWidth - (18 * lmax) - (lmax * 1.5), windowHeight - rectWidth / 2 - (4.5 * lmax));
-    button3.position(lmax * 0.5, windowHeight - rectWidth / 2 - (4.5 * lmax));
-  }
+
+
+
+
+    swatch1 = createButton("");
+    swatch1.position(15 * vMax, height - (13 * vMax));
+    swatch1.size(8 * vMax, 10.5 * vMax);
+    swatch1.style("background-color", colArray[0]);
+    swatch1.class("box");
+    swatch1.mousePressed(function() {
+      changeBrush(1)
+    });
+
+    swatch2 = createButton("");
+    swatch2.position(23 * vMax, height - (13 * vMax));
+    swatch2.size(8 * vMax, 10.5 * vMax);
+    swatch2.style("background-color", colArray[1]);
+    swatch2.class("box");
+    swatch2.mousePressed(function() {
+      changeBrush(2)
+    });
+
+    swatch3 = createButton("");
+    swatch3.position(31 * vMax, height - (13 * vMax));
+    swatch3.size(8 * vMax, 10.5 * vMax);
+    swatch3.style('background-color', colArray[2]);
+    swatch3.class("box");
+    swatch3.mousePressed(function() {
+      changeBrush(3)
+    });
+
+    swatch4 = createButton("");
+    swatch4.position(39 * vMax, height - (13 * vMax));
+    swatch4.size(8 * vMax, 10.5 * vMax);
+    swatch4.style("background-color", colArray[3]);
+    swatch4.class("box");
+    swatch4.mousePressed(function() {
+      changeBrush(4)
+    });
+
+    swatch5 = createButton("");
+    swatch5.position(47 * vMax, height - (13 * vMax));
+    swatch5.size(8 * vMax, 10.5 * vMax);
+    swatch5.style("background-color", colArray[4]);
+    swatch5.class("box");
+    swatch5.mousePressed(function() {
+      changeBrush(5)
+    });
+
+    swatch6 = createButton("");
+    swatch6.position(55 * vMax, height - (13 * vMax));
+    swatch6.size(8 * vMax, 10.5 * vMax);
+    swatch6.style("background-color", colArray[5]);
+    swatch6.class("box");
+    swatch6.mousePressed(function() {
+      changeBrush(6)
+    });
+
+    selColour = createImg('assets/colSelected.png');
+    selColour.position(15 * vMax, height - (16 * vMax));
+    selColour.size(8 * vMax, 16 * vMax);
+    selColour.mousePressed();
+
 }
 
 function erase(){
-makeSwatch();
+
 brushSelected = 6;
-button3.class("select");
+button.remove();
+button = createImg('assets/eraseOn.png');
+button.position(1.5 * vMax, height - (14 * vMax));
+button.size(14 * vMax, 14 * vMax);
+button.mousePressed(erase);
+    selColour.remove();
+
+
+  }
+
+
+  function changeBrush(brushSel) {
+
+    button.remove();
+    button = createImg('assets/eraseOff.png');
+    button.position(1.5 * vMax, height - (14 * vMax));
+    button.size(14 * vMax, 14 * vMax);
+    button.mousePressed(erase);
+
+    brushSelected = brushSel-1;
+
+    selColour.remove();
+    selColour = createImg('assets/colSelected.png');
+    selColour.position((15 + ((brushSel-1) * 8)) * vMax, height - (16 * vMax));
+    selColour.size(8 * vMax, 16 * vMax);
+    selColour.mousePressed();
+
   }
 
 
@@ -99,29 +193,4 @@ function saveImg() {
   image(bg, 0, 0, width, height);
   image(drawLayer, 0, 0, width, height);
   save('SymmetryScape' + month() + day() + hour() + second() + '.jpg');
-}
-
-function makeSwatch() {
-
-//landscape, UI on the right
-  if (width > height) {
-    rectWidth = height / 6;
-    for (let i = 1; i < 7; i++) {
-      uiLayer.fill(color(hexColours[i - 1]));
-      uiLayer.noStroke();
-      uiLayer.rect(0, (rectWidth * i) - rectWidth, rectWidth / 2, rectWidth * i);
-      image(uiLayer, 0, 0);
-    }
-  }
-
-  // portrait, UI on bottom
-  if (width <= height) {
-    rectWidth = width / 6;
-    for (let i = 1; i < 7; i++) {
-      uiLayer.fill(color(hexColours[i - 1]));
-      uiLayer.noStroke();
-      uiLayer.rect(rectWidth * (i - 1), height - (rectWidth / 2), rectWidth * (i), height);
-      image(uiLayer, 0, 0);
-    }
-  }
 }
