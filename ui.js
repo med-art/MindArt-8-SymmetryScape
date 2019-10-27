@@ -47,7 +47,7 @@ function writeTextUI() {
 
 
     swatch1 = createButton("");
-    swatch1.position(13.5 * vMax, height - (13 * vMax));
+    swatch1.position(13 * vMax, height - (13 * vMax));
     swatch1.size(7 * vMax, 10.5 * vMax);
     swatch1.style("background-color", colArray[0]);
     swatch1.class("box");
@@ -56,7 +56,7 @@ function writeTextUI() {
     });
 
     swatch2 = createButton("");
-    swatch2.position(20.5 * vMax, height - (13 * vMax));
+    swatch2.position(20 * vMax, height - (13 * vMax));
     swatch2.size(7 * vMax, 10.5 * vMax);
     swatch2.style("background-color", colArray[1]);
     swatch2.class("box");
@@ -65,7 +65,7 @@ function writeTextUI() {
     });
 
     swatch3 = createButton("");
-    swatch3.position(27.5 * vMax, height - (13 * vMax));
+    swatch3.position(27 * vMax, height - (13 * vMax));
     swatch3.size(7 * vMax, 10.5 * vMax);
     swatch3.style('background-color', colArray[2]);
     swatch3.class("box");
@@ -74,7 +74,7 @@ function writeTextUI() {
     });
 
     swatch4 = createButton("");
-    swatch4.position(34.5 * vMax, height - (13 * vMax));
+    swatch4.position(34 * vMax, height - (13 * vMax));
     swatch4.size(7 * vMax, 10.5 * vMax);
     swatch4.style("background-color", colArray[3]);
     swatch4.class("box");
@@ -83,7 +83,7 @@ function writeTextUI() {
     });
 
     swatch5 = createButton("");
-    swatch5.position(41.5 * vMax, height - (13 * vMax));
+    swatch5.position(41 * vMax, height - (13 * vMax));
     swatch5.size(7 * vMax, 10.5 * vMax);
     swatch5.style("background-color", colArray[4]);
     swatch5.class("box");
@@ -92,7 +92,7 @@ function writeTextUI() {
     });
 
     swatch6 = createButton("");
-    swatch6.position(48.5 * vMax, height - (13 * vMax));
+    swatch6.position(48 * vMax, height - (13 * vMax));
     swatch6.size(7 * vMax, 10.5 * vMax);
     swatch6.style("background-color", colArray[5]);
     swatch6.class("box");
@@ -101,9 +101,18 @@ function writeTextUI() {
     });
 
     selColour = createImg('assets/colSelected.png');
-    selColour.position(13.5 * vMax, height - (16 * vMax));
+    selColour.position(13 * vMax, height - (16 * vMax));
     selColour.size(7 * vMax, 16 * vMax);
     selColour.mousePressed();
+
+
+    fsButton = createImg('assets/enterFS.png');
+    fsButton.style('height', '4.5vMax');
+    fsButton.position(width-(7.5 * vMax), 1.5 * vMax);
+    fsButton.mousePressed(fs);
+
+
+
 
 }
 
@@ -133,7 +142,7 @@ button.mousePressed(erase);
 
     selColour.remove();
     selColour = createImg('assets/colSelected.png');
-    selColour.position((13.5 + ((brushSel-1) * 7)) * vMax, height - (16 * vMax));
+    selColour.position((13 + ((brushSel-1) * 7)) * vMax, height - (16 * vMax));
     selColour.size(7 * vMax, 16 * vMax);
     selColour.mousePressed();
 
@@ -193,4 +202,20 @@ function saveImg() {
   image(bg, 0, 0, width, height);
   image(drawLayer, 0, 0, width, height);
   save('SymmetryScape' + month() + day() + hour() + second() + '.jpg');
+}
+
+function fs(){
+
+
+ if (!fsBool){
+   fullscreen(1);
+   fsBool = 1;
+ }
+
+ else{
+
+   fullscreen(0);
+   fsBool = 0;
+
+ }
 }
