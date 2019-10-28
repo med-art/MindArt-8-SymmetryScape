@@ -1,59 +1,71 @@
-let introText = ["Touch", "Listen", "Look"];
+let introText = ["Touch", "Look", "Listen", "Touch"];
+
+let appCol = "#f1b300";
+
 let slide = 0;
-let delayTime = 100;
+let delayTime = 8000;
 let introState = 0;
 let noiseScale=2;
 
+function mousePressed(){
+
+
+  if (introState < 3){
+
+
+  if (audio.isPlaying()){
+
+  }
+  else {
+        audio.loop(5);
+      }
+
+}
+
+if (slide === 0){
+  slide++;
+  slideShow();
+}
+
+ return false;
+}
 
 function slideShow() {
+
+  if (slide === 0){
+
+
+  }
 
   if (slide === introText.length) {
     textLayer.clear();
     introState = 3;
     writeTextUI();
-    restart();
+  //  nextGrid();
+
+    //restart();
     counter = 0;
   }
 
-  if (slide < introText.length) {
+  else if (slide < introText.length) {
 
     textLayer.clear();
-    textLayer.noFill();
-    textLayer.noTint();
-
-     introLayer.strokeWeight(2);
-    for (let y = 0; y < height/2; y++) {
-      let inter = map(y, 50, height/2, 0, 1);
-      let c = lerpColor(color(0, 0, 0, 1000), color(100, 100, 100, 1000), inter);
-      introLayer.stroke(c);
-      introLayer.line(0, y, width, y);
-      introLayer.line(0, height-y, width , height-y);
-    }
-
-    introLayer.noStroke();
-
-
-
-    textLayer.fill(color("WHITE"));
-    textLayer.textSize(vMax * 6);
+    textLayer.fill(255, 5);
+    textLayer.textSize(vMax*8);
     textLayer.textAlign(CENTER, CENTER);
     textLayer.rectMode(CENTER);
-    textLayer.text(introText[slide], width / 2, (hmax * 50)-(vMax*2), width * 0.8, height);
-    textLayer.push();
-    textLayer.translate(width/2, height/2);
-    textLayer.scale(1,-1);
-    textLayer.fill(color(120,120,120,200));
-    textLayer.text(introText[slide], 0, 0-(vMax*2), width * 0.8, height);
-    textLayer.pop();
+    textLayer.text(introText[slide], width/2, (height/8)*(slide+2));
 
+if (slide > 0){
 
-    image(bg, 0, 0, width, height);
-    image(textLayer, 0, 0, width, height);
+if (slide === introText.length-1){
+  delayTime = 10000;
+}
 
-    if (slide > 0) {
       slide++;
+      console.log(slide);
       setTimeout(slideShow, delayTime);
-    }
+}
 
   }
 }

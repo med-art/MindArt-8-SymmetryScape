@@ -12,9 +12,7 @@ let brushBool = 0;
 function preload() {
   bg = loadImage('assets/paper.jpg');
   audio = loadSound('assets/audio.mp3');
-  for (i = 0; i < 6; i++) {
-    brush[i] = loadImage('assets/br-' + [i] + '.png')
-  }
+
 }
 
 function setup() {
@@ -33,14 +31,14 @@ function setup() {
   drawLayer.colorMode(RGB, 255, 255, 255, 1000);
   introLayer.fill(100, 100, 100, 5);
   introLayer.strokeCap(SQUARE);
-
+  textLayer = createGraphics(windowWidth, windowHeight);
   dimensionCalc();
   slideShow();
 
-  for (i = 0; i < qtyIntroDots; i++){
-    xCo[i] = int(random(0,width));
+  for (i = 0; i < qtyIntroDots; i++) {
+    xCo[i] = int(random(0, width));
     yCo[i] = 0;
-    velo[i] = (random(1,5));
+    velo[i] = (random(1, 5));
   }
 
 }
@@ -63,22 +61,24 @@ function dimensionCalc() {
 
 function mousePressed() {
 
+if (introState === 3){
+
   // splash screen to select one of the brushes
   if (uiInterrupt === 1) {
 
 
-      for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < 3; j++) {
-          if (dist((i * (width / 4)) + shortEdge / 4, (j * (height / 3)) + shortEdge / 4, winMouseX, winMouseY) < shortEdge / 4) {
-            //brush slected
-          }
-          brushCounter++;
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (dist((i * (width / 4)) + shortEdge / 4, (j * (height / 3)) + shortEdge / 4, winMouseX, winMouseY) < shortEdge / 4) {
+          //brush slected
         }
+        brushCounter++;
       }
+    }
 
     // Start of Slideshow
   } else if (introState === 0) {
-      audio.loop();
+    audio.loop();
     slide = 1;
     slideShow();
     introState = 1;
@@ -87,20 +87,26 @@ function mousePressed() {
 
     faderStart = 600;
 
+  }
 }
 }
 
 
-function touchEnded(){
+function touchEnded() {
   faderStart = 600;
 
 }
 
 function touchMoved() {
 
-
+  if (introState === 3){
   makeDrawing(winMouseX, winMouseY, pwinMouseX, pwinMouseY);
   return false;
+} else {
+
+// do stuff here
+}
+
 }
 
 
@@ -151,10 +157,10 @@ function brushIt(_x, _y, pX, pY) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 2, 3)); // for line work
     drawLayer.stroke(100, 100, 100, 500);
 
-    for (i = 0; i < 10; i++){
-      let randX = randomGaussian(-6,6);
-          let randY = randomGaussian(-6,6);
-        drawLayer.line(_x+randX, _y+randY, pX+randX, pY+randY);
+    for (i = 0; i < 10; i++) {
+      let randX = randomGaussian(-6, 6);
+      let randY = randomGaussian(-6, 6);
+      drawLayer.line(_x + randX, _y + randY, pX + randX, pY + randY);
     }
 
 
@@ -186,7 +192,7 @@ function brushIt(_x, _y, pX, pY) {
     }
   } else if (brushSelected === 5) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 30, 40)); // for line work
-    drawLayer.stroke(255, 255, 255, (faderStart-=5));
+    drawLayer.stroke(255, 255, 255, 350);
     drawLayer.line(_x, _y, pX, pY);
 
 
@@ -194,20 +200,20 @@ function brushIt(_x, _y, pX, pY) {
   } else if (brushSelected === 2) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 50, 60)); // for line work
 
-    if (faderStart <= 0){
+    if (faderStart <= 0) {
       brushBool = 0;
     }
 
-    if (faderStart >= 1000){
+    if (faderStart >= 1000) {
       brushBool = 1;
     }
 
-    if (brushBool === 0 ){
-      drawLayer.stroke(100, 100, 100, (faderStart+=20)/5);
+    if (brushBool === 0) {
+      drawLayer.stroke(100, 100, 100, (faderStart += 20) / 5);
     }
 
-    if (brushBool === 1 ){
-      drawLayer.stroke(100, 100, 100, (faderStart-=20)/5);
+    if (brushBool === 1) {
+      drawLayer.stroke(100, 100, 100, (faderStart -= 20) / 5);
     }
 
     drawLayer.line(_x, _y, pX, pY);
@@ -219,8 +225,8 @@ function brushIt(_x, _y, pX, pY) {
 
 
     drawLayer.loadPixels();
-    for (let y = (_y - 60); y < (_y + 60); y ++ ) {
-      for (let x = (_x - 60); x < (_x + 60); x ++ ) {
+    for (let y = (_y - 60); y < (_y + 60); y++) {
+      for (let x = (_x - 60); x < (_x + 60); x++) {
         if (dist(x, y, _x, _y) < 30) {
           drawLayer.set(x, y, color(0, 0));
         }
@@ -238,47 +244,35 @@ function brushIt(_x, _y, pX, pY) {
 
 function draw() {
 
-  if (introState != 3) {
+  if (introState === 3) {
 
 
-    image(introLayer, 0, 0, width, height);
-        image(textLayer, 0, 0, width, height);
+        image(bg, 0, 0, width, height);
+        image(drawLayer, 0, 0, width, height);
+        blendMode(BLEND);
+        image(lineLayer, 0, 0, width, height);
+        image(uiLayer, 0, 0, width, height);
 
 
-    for (i = 0; i < qtyIntroDots; i++){
-       xCo[i] += int(random(-4,7));
-       xCo[i] = xCo[i]%(width);
-          yCo[i] += int(random(1,velo[i]));
-          yCo[i] = yCo[i]%((height/2)+2);
-
-
-          for (j = 0; j < 5; j++){
-            let randX = randomGaussian(-3,3);
-            let randY = randomGaussian(-3,3);
-            introLayer.fill(180, 180, 180, 1);
-            introLayer.ellipse(xCo[i]+randX, (height/2)-yCo[i]+randY, 1, 1);
-            introLayer.fill(150, 150, 150, 1);
-            introLayer.ellipse(xCo[i]+randX, ((height/2)+yCo[i])-randY, 1, 1);
-           }
-          introLayer.strokeWeight(1);
-          introLayer.stroke(120);
-          introLayer.line(0,height/2,width,height/2);
-
-
-    }
 
   }
 
-  if (introState === 3) {
-    if (uiInterrupt) {
-      image(bg, 0, 0, width, height);
-    } else {
-      image(bg, 0, 0, width, height);
-      image(drawLayer, 0, 0, width, height);
-      blendMode(BLEND);
-      image(lineLayer, 0, 0, width, height);
-      image(uiLayer, 0, 0, width, height);
+
+
+  else {
+    blendMode(BLEND);
+    background(106, 175, 172, 100);
+
+    if (slide > 0) {
+// DO STUFF
     }
+
+    if (slide === 0) {
+      textLayer.text(introText[slide], width / 2, (height / 8) * (slide + 2));
+    } else {
+      textLayer.text(introText[slide - 1], width / 2, (height / 6) * (slide));
+    } // this if else statgement needs to be replaced with a better system. The current state tracking is not working
+    image(textLayer, 0, 0, width, height);
 
   }
 }
