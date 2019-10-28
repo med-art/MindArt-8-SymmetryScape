@@ -101,12 +101,12 @@ function touchMoved() {
 
   if (introState === 3){
   makeDrawing(winMouseX, winMouseY, pwinMouseX, pwinMouseY);
-  return false;
+
 } else {
 
 // do stuff here
 }
-
+  return false;
 }
 
 
