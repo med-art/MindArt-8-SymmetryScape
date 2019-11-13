@@ -131,7 +131,7 @@ button.mousePressed(erase);
 
 
   function changeBrush(brushSel) {
-
+    click.play();
     button.remove();
     button = createImg('assets/eraseOff.png');
     button.position(0.8 * vMax, height - (14 * vMax));
@@ -156,6 +156,7 @@ function interruptor() {
 
 
 function restartTimeout(){
+  click.play();
   setTimeout(restart, 250);
 }
 
@@ -199,13 +200,14 @@ lineLayer.line(width, 0, 0, height);
 }
 
 function saveImg() {
+    click.play();
   image(bg, 0, 0, width, height);
   image(drawLayer, 0, 0, width, height);
   save('SymmetryScape' + month() + day() + hour() + second() + '.jpg');
 }
 
 function fs(){
-
+  click.play();
 
  if (!fsBool){
    fullscreen(1);

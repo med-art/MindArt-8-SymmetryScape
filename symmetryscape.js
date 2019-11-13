@@ -8,18 +8,20 @@ let xCo = [];
 let yCo = [];
 let velo = [];
 let brushBool = 0;
+let intX, intY;
+let introCol;
+let introSize;
 
 function preload() {
   bg = loadImage('assets/paper.jpg');
   audio = loadSound('assets/audio.mp3');
+  click = loadSound('assets/click.mp3');
 
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   pixelDensity(1); // Ignores retina displays
-
-  //Visible draw Layer
   drawLayer = createGraphics(width, height);
   drawLayer.colorMode(RGB, 255, 255, 255, 1000);
   drawLayer.strokeCap(PROJECT);
@@ -29,17 +31,27 @@ function setup() {
   lineLayer = createGraphics(width, height);
   introLayer = createGraphics(width, height);
   drawLayer.colorMode(RGB, 255, 255, 255, 1000);
-  introLayer.fill(100, 100, 100, 5);
-  introLayer.strokeCap(SQUARE);
+  introCol = 250;
+  introLayer.fill(250, 2);
+  fill(0);
+  introSize = 150;
+  introLayer.strokeWeight(2);
+  introLayer.stroke(200,2);
   textLayer = createGraphics(windowWidth, windowHeight);
   dimensionCalc();
+  slide = 0;
   slideShow();
+
+
 
   for (i = 0; i < qtyIntroDots; i++) {
     xCo[i] = int(random(0, width));
     yCo[i] = 0;
     velo[i] = (random(1, 5));
   }
+
+  intX = width/5
+  intY = height/2;
 
 }
 
@@ -104,7 +116,21 @@ function touchMoved() {
 
 } else {
 
-// do stuff here
+if (dist(intX, intY, mouseX, mouseY) < 60){
+  intX = mouseX;
+  intY = mouseY;
+  introCol = introCol - 0.1;
+}
+if (dist(width-intX, intY, mouseX, mouseY) < 60){
+  intX = width-mouseX;
+  intY = mouseY;
+  introCol = introCol - 0.1;
+}
+introLayer.fill(introCol, 50);
+introLayer.stroke(introCol-10, 50);
+fill(255-introCol);
+introSize = introSize - 0.03;
+
 }
   return false;
 }
@@ -264,11 +290,15 @@ function draw() {
     background(106, 175, 172, 100);
 
     if (slide > 0) {
-// DO STUFF
+    introLayer.ellipse(intX, intY, introSize);
+    introLayer.ellipse(width-intX, intY, introSize);
+    image(introLayer, 0,0, width, height);
+    ellipse(intX, intY, introSize*0.8);
+    ellipse(width-intX, intY, introSize*0.8);
     }
 
     if (slide === 0) {
-      textLayer.text(introText[slide], width / 2, (height / 8) * (slide + 2));
+
     } else {
       textLayer.text(introText[slide - 1], width / 2, (height / 6) * (slide));
     } // this if else statgement needs to be replaced with a better system. The current state tracking is not working
