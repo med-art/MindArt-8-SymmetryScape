@@ -1,7 +1,7 @@
 let introText = ["Touchez", "Regardez", "Ecoutez", "Touchez"];
 let appCol = "#f1b300";
 let slide = 4;
-let delayTime = 8000;
+let delayTime = 800;
 let introState = 0;
 
 function mousePressed(){
@@ -54,7 +54,7 @@ function slideShow() {
 if (slide > 0){
 
 if (slide === introText.length-1){
-  delayTime = 10000;
+  delayTime = 1000;
 }
 
       slide++;

@@ -1,4 +1,4 @@
-let saveButton, newButton, button3;
+let saveButton, newButton, button3, button;
 let rectWidth;
 let counter = 4; // so that when the restart happens, resets to 0 via the restart function.
 let uiInterrupt = 0;
@@ -37,14 +37,7 @@ function writeTextUI() {
   button = createImg('assets/eraseOff.png');
   button.position(0.8 * vMax, height - (14 * vMax));
   button.size(14 * vMax, 14 * vMax);
-  button.mousePressed(erase);
-
-
-
-    rectWidth = width / 6;
-
-
-
+  button.mousePressed(eraser);
 
     swatch1 = createButton("");
     swatch1.position(13 * vMax, height - (13 * vMax));
@@ -116,16 +109,17 @@ function writeTextUI() {
 
 }
 
-function erase(){
+
+
+function eraser(){
 
 brushSelected = 6;
 button.remove();
 button = createImg('assets/eraseOn.png');
 button.position(0.8 * vMax, height - (14 * vMax));
 button.size(14 * vMax, 14 * vMax);
-button.mousePressed(erase);
-    selColour.remove();
-
+button.mousePressed(eraser);
+selColour.remove();
 
   }
 
@@ -136,7 +130,7 @@ button.mousePressed(erase);
     button = createImg('assets/eraseOff.png');
     button.position(0.8 * vMax, height - (14 * vMax));
     button.size(14 * vMax, 14 * vMax);
-    button.mousePressed(erase);
+    button.mousePressed(eraser);
 
     brushSelected = brushSel-1;
 

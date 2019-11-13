@@ -16,7 +16,6 @@ function preload() {
   bg = loadImage('assets/paper.jpg');
   audio = loadSound('assets/audio.mp3');
   click = loadSound('assets/click.mp3');
-
 }
 
 function setup() {
@@ -25,7 +24,6 @@ function setup() {
   drawLayer = createGraphics(width, height);
   drawLayer.colorMode(RGB, 255, 255, 255, 1000);
   drawLayer.strokeCap(PROJECT);
-
   uiLayer = createGraphics(width, height);
   textLayer = createGraphics(width, height);
   lineLayer = createGraphics(width, height);
@@ -36,23 +34,47 @@ function setup() {
   fill(0);
   introSize = 150;
   introLayer.strokeWeight(2);
-  introLayer.stroke(200,2);
-  textLayer = createGraphics(windowWidth, windowHeight);
+  introLayer.stroke(200, 2);
   dimensionCalc();
   slide = 0;
   slideShow();
-
-
-
   for (i = 0; i < qtyIntroDots; i++) {
     xCo[i] = int(random(0, width));
     yCo[i] = 0;
     velo[i] = (random(1, 5));
   }
+  intX = width / 5
+  intY = height / 2;
+}
 
-  intX = width/5
-  intY = height/2;
-
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  calcDimensions();
+  textLayer.resizeCanvas(windowWidth, windowHeight);
+  uiLayer = createGraphics(width, height);
+  textLayer = createGraphics(width, height);
+  lineLayer = createGraphics(width, height);
+  introLayer = createGraphics(width, height);
+  if (introState === 3) {
+    removeElements();
+    let bgLayer1New = createGraphics(windowWidth, windowHeight);
+    bgLayer1New.image(bgLayer1, 0, 0, windowWidth, windowHeight);
+    bgLayer1.resizeCanvas(windowWidth, windowHeight);
+    bgLayer1 = bgLayer1New;
+    bgLayer1New.remove();
+    sliderImg.resizeCanvas(windowWidth, windowHeight);
+    saveNext();
+    if (drawingIsActive) {
+      makeSwatch();
+      blendMode(BLEND);
+      background(255);
+      blendMode(DARKEST);
+      image(subLayer1, windowWidth, windowHeight);
+      image(subLayer2, windowWidth, windowHeight);
+      image(subLayer3, windowWidth, windowHeight);
+      //changeBrush(currentLayer);
+    }
+  }
 }
 
 function dimensionCalc() {
@@ -72,78 +94,58 @@ function dimensionCalc() {
 }
 
 function mousePressed() {
-
-if (introState === 3){
-
-  // splash screen to select one of the brushes
-  if (uiInterrupt === 1) {
-
-
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 3; j++) {
-        if (dist((i * (width / 4)) + shortEdge / 4, (j * (height / 3)) + shortEdge / 4, winMouseX, winMouseY) < shortEdge / 4) {
-          //brush slected
+  if (introState === 3) {
+    // splash screen to select one of the brushes
+    if (uiInterrupt === 1) {
+      for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (dist((i * (width / 4)) + shortEdge / 4, (j * (height / 3)) + shortEdge / 4, winMouseX, winMouseY) < shortEdge / 4) {
+            //brush slected
+          }
+          brushCounter++;
         }
-        brushCounter++;
       }
+      // Start of Slideshow
+    } else if (introState === 0) {
+      audio.loop();
+      slide = 1;
+      slideShow();
+      introState = 1;
+    } else if (introState === 3) {
+      faderStart = 600;
     }
-
-    // Start of Slideshow
-  } else if (introState === 0) {
-    audio.loop();
-    slide = 1;
-    slideShow();
-    introState = 1;
-
-  } else if (introState === 3) {
-
-    faderStart = 600;
-
   }
 }
-}
-
 
 function touchEnded() {
   faderStart = 600;
-
 }
 
 function touchMoved() {
-
-  if (introState === 3){
-  makeDrawing(winMouseX, winMouseY, pwinMouseX, pwinMouseY);
-
-} else {
-
-if (dist(intX, intY, mouseX, mouseY) < 60){
-  intX = mouseX;
-  intY = mouseY;
-  introCol = introCol - 0.1;
-}
-if (dist(width-intX, intY, mouseX, mouseY) < 60){
-  intX = width-mouseX;
-  intY = mouseY;
-  introCol = introCol - 0.1;
-}
-introLayer.fill(introCol, 50);
-introLayer.stroke(introCol-10, 50);
-fill(255-introCol);
-introSize = introSize - 0.03;
-
-}
+  if (introState === 3) {
+    makeDrawing(winMouseX, winMouseY, pwinMouseX, pwinMouseY);
+  } else {
+    if (dist(intX, intY, mouseX, mouseY) < 60) {
+      intX = mouseX;
+      intY = mouseY;
+      introCol = introCol - 0.1;
+    }
+    if (dist(width - intX, intY, mouseX, mouseY) < 60) {
+      intX = width - mouseX;
+      intY = mouseY;
+      introCol = introCol - 0.1;
+    }
+    introLayer.fill(introCol, 50);
+    introLayer.stroke(introCol - 10, 50);
+    fill(255 - introCol);
+    introSize = introSize - 0.03;
+  }
   return false;
 }
 
-
-
 function makeDrawing(_x, _y, pX, pY) {
-
-
   drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 1, 2)); // for line work
   drawLayer.stroke(0);
-
-
   if (counter === 0) {
     brushIt(_x, _y, pX, pY);
     brushIt(width - _x, _y, width - pX, pY);
@@ -175,41 +177,25 @@ function makeDrawing(_x, _y, pX, pY) {
 }
 
 function brushIt(_x, _y, pX, pY) {
-
   if (brushSelected === 3) {
-
-
-
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 2, 3)); // for line work
     drawLayer.stroke(100, 100, 100, 500);
-
     for (i = 0; i < 10; i++) {
       let randX = randomGaussian(-6, 6);
       let randY = randomGaussian(-6, 6);
       drawLayer.line(_x + randX, _y + randY, pX + randX, pY + randY);
     }
-
-
-
   }
-
   if (brushSelected === 1) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 3, 5)); // for line work
     drawLayer.stroke(10, 10, 10, 600);
     drawLayer.line(_x, _y, pX, pY);
   }
-
-
   if (brushSelected === 0) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 14, 15)); // for line work
     drawLayer.stroke(20, 20, 20, 500);
     drawLayer.line(_x, _y, pX, pY);
-
-
   } else if (brushSelected === 4) {
-
-
-
     drawLayer.strokeWeight(abs(random(0, 4)));
     for (i = 0; i < 60; i++) {
       let tempCol = abs(random(200, 255));
@@ -220,89 +206,54 @@ function brushIt(_x, _y, pX, pY) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 30, 40)); // for line work
     drawLayer.stroke(255, 255, 255, 350);
     drawLayer.line(_x, _y, pX, pY);
-
-
-
   } else if (brushSelected === 2) {
     drawLayer.strokeWeight(constrain(abs((_y + _x) - (pX + pY)), 50, 60)); // for line work
-
     if (faderStart <= 0) {
       brushBool = 0;
     }
-
     if (faderStart >= 1000) {
       brushBool = 1;
     }
-
     if (brushBool === 0) {
       drawLayer.stroke(100, 100, 100, (faderStart += 20) / 5);
     }
-
     if (brushBool === 1) {
       drawLayer.stroke(100, 100, 100, (faderStart -= 20) / 5);
     }
-
     drawLayer.line(_x, _y, pX, pY);
-
-
-
-
   } else if (brushSelected === 6) {
-
-
     drawLayer.loadPixels();
-    for (let y = (_y - 60); y < (_y + 60); y++) {
-      for (let x = (_x - 60); x < (_x + 60); x++) {
-        if (dist(x, y, _x, _y) < 30) {
+    for (let y = (_y - 100); y < (_y + 100); y+=3) {
+      for (let x = (_x - 100); x < (_x + 100); x+=3) {
+        if (dist(x, y, _x, _y) < 50) {
           drawLayer.set(x, y, color(0, 0));
         }
       }
     }
     drawLayer.updatePixels();
-
-
-
   }
-
-
 }
 
-
 function draw() {
-
   if (introState === 3) {
-
-
-        image(bg, 0, 0, width, height);
-        image(drawLayer, 0, 0, width, height);
-        blendMode(BLEND);
-        image(lineLayer, 0, 0, width, height);
-        image(uiLayer, 0, 0, width, height);
-
-
-
-  }
-
-
-
-  else {
+    image(bg, 0, 0, width, height);
+    image(drawLayer, 0, 0, width, height);
+    blendMode(BLEND);
+    image(lineLayer, 0, 0, width, height);
+    image(uiLayer, 0, 0, width, height);
+  } else {
     blendMode(BLEND);
     background(106, 175, 172, 100);
-
     if (slide > 0) {
-    introLayer.ellipse(intX, intY, introSize);
-    introLayer.ellipse(width-intX, intY, introSize);
-    image(introLayer, 0,0, width, height);
-    ellipse(intX, intY, introSize*0.8);
-    ellipse(width-intX, intY, introSize*0.8);
+      introLayer.ellipse(intX, intY, introSize);
+      introLayer.ellipse(width - intX, intY, introSize);
+      image(introLayer, 0, 0, width, height);
+      ellipse(intX, intY, introSize * 0.8);
+      ellipse(width - intX, intY, introSize * 0.8);
     }
-
-    if (slide === 0) {
-
-    } else {
+    if (slide === 0) {} else {
       textLayer.text(introText[slide - 1], width / 2, (height / 6) * (slide));
     } // this if else statgement needs to be replaced with a better system. The current state tracking is not working
     image(textLayer, 0, 0, width, height);
-
   }
 }
