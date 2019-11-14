@@ -162,6 +162,7 @@ function restart() {
   drawState = 1;
   drawLayer.clear();
   lineLayer.clear();
+  introLayer.clear();
 
   if (counter >= 4){
     counter = 0;

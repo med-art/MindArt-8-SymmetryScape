@@ -33,6 +33,7 @@ function slideShow() {
 
   if (slide === introText.length) {
     textLayer.clear();
+    lineLayer.clear();
     introState = 3;
     writeTextUI();
   //  nextGrid();
