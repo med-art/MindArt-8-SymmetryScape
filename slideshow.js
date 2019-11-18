@@ -18,6 +18,7 @@ if (slide === 0){
   startButton.remove();
   slide++;
   slideShow();
+
 }
 
  return false;
@@ -41,6 +42,7 @@ function slideShow() {
     //restart();
     counter = 0;
     slide = 4;
+    touchStarted();
   }
 
   else if (slide < introText.length && slide > 0) {

@@ -223,8 +223,8 @@ function brushIt(_x, _y, pX, pY) {
     drawLayer.line(_x, _y, pX, pY);
   } else if (brushSelected === 6) {
     drawLayer.loadPixels();
-    for (let y = (_y - 100); y < (_y + 100); y+=3) {
-      for (let x = (_x - 100); x < (_x + 100); x+=3) {
+    for (let y = (_y - 200); y < (_y + 200); y+=2) {
+      for (let x = (_x - 200); x < (_x + 200); x+=2) {
         if (dist(x, y, _x, _y) < 50) {
           drawLayer.set(x, y, color(0, 0));
         }
