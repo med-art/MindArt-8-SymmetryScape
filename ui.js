@@ -189,7 +189,6 @@ lineLayer.line(width, 0, 0, height);
 }
 
 
-  console.log(counter);
 
 
 }
