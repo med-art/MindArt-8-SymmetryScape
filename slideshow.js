@@ -37,12 +37,8 @@ function slideShow() {
     lineLayer.clear();
     introState = 3;
     writeTextUI();
-  //  nextGrid();
-
-    //restart();
     counter = 0;
     slide = 4;
-    touchStarted();
   }
 
   else if (slide < introText.length && slide > 0) {

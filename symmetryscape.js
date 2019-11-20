@@ -11,11 +11,13 @@ let brushBool = 0;
 let intX, intY;
 let introCol;
 let introSize;
+let eraseAlpha;
 
 function preload() {
   bg = loadImage('assets/paper.jpg');
   audio = loadSound('assets/audio.mp3');
   click = loadSound('assets/click.mp3');
+  eraseAlpha = loadImage('assets/eraseAlpha3.png');
 }
 
 function setup() {
@@ -49,7 +51,7 @@ function setup() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  calcDimensions();
+  dimensionCalc();
   textLayer.resizeCanvas(windowWidth, windowHeight);
   uiLayer = createGraphics(width, height);
   textLayer = createGraphics(width, height);
@@ -222,15 +224,11 @@ function brushIt(_x, _y, pX, pY) {
     }
     drawLayer.line(_x, _y, pX, pY);
   } else if (brushSelected === 6) {
-    drawLayer.loadPixels();
-    for (let y = (_y - 200); y < (_y + 200); y+=2) {
-      for (let x = (_x - 200); x < (_x + 200); x+=2) {
-        if (dist(x, y, _x, _y) < 50) {
-          drawLayer.set(x, y, color(0, 0));
-        }
-      }
-    }
-    drawLayer.updatePixels();
+    drawLayer.blendMode(REMOVE);
+
+    drawLayer.image(eraseAlpha, _x-50, _y-50, 100, 100);
+    drawLayer.blendMode(BLEND);
+
   }
 }
 
