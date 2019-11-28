@@ -54,28 +54,19 @@ function windowResized() {
   dimensionCalc();
   textLayer.resizeCanvas(windowWidth, windowHeight);
   uiLayer = createGraphics(width, height);
-  textLayer = createGraphics(width, height);
+
   lineLayer = createGraphics(width, height);
   introLayer = createGraphics(width, height);
   if (introState === 3) {
     removeElements();
-    let bgLayer1New = createGraphics(windowWidth, windowHeight);
-    bgLayer1New.image(bgLayer1, 0, 0, windowWidth, windowHeight);
-    bgLayer1.resizeCanvas(windowWidth, windowHeight);
-    bgLayer1 = bgLayer1New;
-    bgLayer1New.remove();
-    sliderImg.resizeCanvas(windowWidth, windowHeight);
-    saveNext();
-    if (drawingIsActive) {
-      makeSwatch();
-      blendMode(BLEND);
-      background(255);
-      blendMode(DARKEST);
-      image(subLayer1, windowWidth, windowHeight);
-      image(subLayer2, windowWidth, windowHeight);
-      image(subLayer3, windowWidth, windowHeight);
-      //changeBrush(currentLayer);
-    }
+    let drawLayerNew = createGraphics(windowWidth, windowHeight);
+    drawLayerNew.image(drawLayer, 0, 0, windowWidth, windowHeight);
+    drawLayer.resizeCanvas(windowWidth, windowHeight);
+    drawLayer = drawLayerNew;
+    drawLayerNew.remove();
+    writeTextUI();
+
+
   }
 }
 
