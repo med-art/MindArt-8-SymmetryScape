@@ -30,7 +30,7 @@ function setup() {
   textLayer = createGraphics(width, height);
   lineLayer = createGraphics(width, height);
   introLayer = createGraphics(width, height);
-  drawLayer.colorMode(RGB, 255, 255, 255, 1000);
+  // drawLayer.colorMode(RGB, 255, 255, 255, 1000);
   introCol = 250;
   introLayer.fill(250, 2);
   fill(0);
@@ -57,7 +57,7 @@ function windowResized() {
 
   lineLayer = createGraphics(width, height);
   introLayer = createGraphics(width, height);
-  if (introState === 3) {
+  if (introComplete) {
     removeElements();
     let drawLayerNew = createGraphics(windowWidth, windowHeight);
     drawLayerNew.image(drawLayer, 0, 0, windowWidth, windowHeight);
@@ -87,35 +87,33 @@ function dimensionCalc() {
 }
 
 function mousePressed() {
-  if (introState === 3) {
-    // splash screen to select one of the brushes
-    if (uiInterrupt === 1) {
-      for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < 3; j++) {
-          if (dist((i * (width / 4)) + shortEdge / 4, (j * (height / 3)) + shortEdge / 4, winMouseX, winMouseY) < shortEdge / 4) {
-            //brush slected
-          }
-          brushCounter++;
-        }
-      }
-      // Start of Slideshow
-    } else if (introState === 0) {
-      audio.loop();
-      slide = 1;
-      slideShow();
-      introState = 1;
-    } else if (introState === 3) {
-      faderStart = 600;
+    faderStart = 600;
+
+    if (slide === 0){
+    startUp();
     }
+
+    return false;
   }
+
+
+function startUp() {
+
+  click.play();
+  startButton.remove();
+  slide++;
+  if (audio.isPlaying()) {} else {
+    audio.loop(1);
+  }
+
+  introState = 1;
+  slideShow();
+
 }
 
-function touchEnded() {
-  faderStart = 600;
-}
 
 function touchMoved() {
-  if (introState === 3) {
+  if (introComplete) {
     makeDrawing(winMouseX, winMouseY, pwinMouseX, pwinMouseY);
   } else {
     if (dist(intX, intY, mouseX, mouseY) < 60) {
@@ -224,7 +222,7 @@ function brushIt(_x, _y, pX, pY) {
 }
 
 function draw() {
-  if (introState === 3) {
+  if (introComplete) {
     image(bg, 0, 0, width, height);
     image(drawLayer, 0, 0, width, height);
     blendMode(BLEND);
@@ -241,7 +239,7 @@ function draw() {
       ellipse(width - intX, intY, introSize * 0.8);
     }
     if (slide === 0) {} else {
-      textLayer.text(introText[slide - 1], width / 2, (height / 6) * (slide));
+      textLayer.text(introText[slide - 1], width / 2, (height / 3) * (slide-1));
     } // this if else statgement needs to be replaced with a better system. The current state tracking is not working
     image(textLayer, 0, 0, width, height);
   }

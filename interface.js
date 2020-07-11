@@ -1,13 +1,59 @@
-let saveButton, newButton, button3, button;
+let introText = ["Touch and Listen", "Look", "Draw"];
+let appCol = "#f1b300";
+let slide = 4;
+let delayTime = 8000;
+let introComplete = 0;
+
+let saveButton, newButton, button3, button, fsButton;
+let fsBool = 0;
+
+
 let rectWidth;
 let counter = 4; // so that when the restart happens, resets to 0 via the restart function.
 let uiInterrupt = 0;
 
-let hexColours = ["#000000", "#444444", "#888888", "#a1a1a1", "#c2c2c2", "#ffffff"]
+
 let colArray = ["#000000", "#444444", "#888888", "#a1a1a1", "#c2c2c2", "#ffffff"]
 
-let fsBool = 0;
-let fsButton;
+
+
+
+// // currently under the main sketch
+
+
+function slideShow() {
+
+  if (slide === 0){
+    startButton = createButton(introText[0]);
+    startButton.class("startButton");
+    startButton.position((width / 2) - (20 * vMax), (height / 2) - (4 * vMax));
+        startButton.mousePressed(startUp);
+  }
+  if (slide === introText.length) {
+    textLayer.clear();
+    lineLayer.clear();
+    introComplete = 1;
+    writeTextUI();
+    //sizeWindow();
+    counter = 0;
+  } else if (slide < introText.length && slide > 0) {
+    textLayer.clear();
+    textLayer.fill(255, 5);
+    textLayer.textSize(vMax*8);
+    textLayer.textAlign(CENTER, CENTER);
+    textLayer.rectMode(CENTER);
+    if (slide > 0){
+      if (slide === introText.length-1){
+        delayTime = 10000;
+      }
+      slide++;
+      setTimeout(slideShow, delayTime);
+}
+
+  }
+}
+
+
 
 function writeTextUI() {
 

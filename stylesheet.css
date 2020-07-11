@@ -1,5 +1,6 @@
 .symmetryscape {
   height: 100%;
+  overflow: hidden;
   overscroll-behavior: none;
   position: fixed;
 }
@@ -16,16 +17,25 @@ transform: translate(-50%, -50%);
 }
 
 .startButton {
-  font-size: 5vmax;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  opacity: 1;
+  font-size: 4vmax;
   font-family: "AvenirNext";
   letter-spacing: 1px;
   font-weight: 700;
+  text-align: center;
   background-color: transparent;
   color: white;
-  border-width: 5px;
+  border-width: 4px;
+  border-color: white;
+  border-style: solid;;
   border-radius: 5vmax;
-  width: 28vmax;
+  width: 40vmax;
+  padding: 0;
   height: 10vmax;
+
 }
 
 
